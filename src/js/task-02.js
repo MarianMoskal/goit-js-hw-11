@@ -14,20 +14,29 @@ startBtn.setAttribute('disabled', true);
 let x;
 let a = 0;
 let inputDate;
-inputEl.addEventListener('input', getValueFromInput);
+inputEl.addEventListener('input', (() => {
+  if (startBtn.classList.contains('isOn')) {
+    inputEl.setAttribute('disabled', true);
+    Swal.fire("The timer is already running");
+  } else {
+    processValueFromInput()
+  };
+}));
 
-function getValueFromInput() {
+
+function processValueFromInput() {
+  //   if (startBtn.classList.contains('isOn')) {
+  //         inputEl.setAttribute('disabled', true);
+  //   Swal.fire("The timer is already running");
+  // }
+  
     if (Date.now() < new Date(inputEl.value).getTime() && inputEl.value) {
       startBtn.removeAttribute('disabled');
       inputDate = inputEl.value;
       startBtn.addEventListener('click', () => {
-        if (startBtn.classList.contains('isOn')) {
-            Swal.fire("The timer is already running");
-        } else {
           Timer.start();
           startBtn.classList.add('isOn');
-        }
-      });
+        });
     } else {
       startBtn.setAttribute('disabled', true);
       Swal.fire("Please choose a date in the future");
